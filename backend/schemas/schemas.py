@@ -15,3 +15,17 @@ class User(BaseModel):
 
     class Config:
         from_attributes = True
+
+class PostCreate(BaseModel):
+    title: str
+    content: str
+    author_id: UUID
+
+class Post(BaseModel):
+    id: str
+    title: str
+    content: str
+    author_id: str
+
+    class Config:
+        from_attributes = True
