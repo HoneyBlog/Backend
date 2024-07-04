@@ -10,8 +10,8 @@ from sqlalchemy.exc import OperationalError
 # Load environment variables
 db_username = os.environ.get('DB_USERNAME')
 db_password = os.environ.get('DB_PASSWORD')
-db_host = os.environ.get('DB_HOST', 'localhost')  # Ensure you specify the host
-db_name = os.environ.get('DB_NAME', 'HoneyPotDB')  # Ensure you specify the database name
+db_host = os.environ.get('DB_HOST')
+db_name = os.environ.get('DB_NAME') 
 
 # Construct the database URL
 SQLALCHEMY_DATABASE_URL = f"postgresql://{db_username}:{db_password}@{db_host}/{db_name}"

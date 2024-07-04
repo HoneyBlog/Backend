@@ -1,25 +1,27 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, constr
 from uuid import UUID
 
-
 class UserCreate(BaseModel):
-    username: str
-    email: str
-    password: str
+        username: str
+        email: EmailStr
+        password: str
+
 
 class User(BaseModel):
-    id: str
+    id: UUID
     username: str
-    email: str
+    email: EmailStr
     password: str
 
     class Config:
         from_attributes = True
 
+
 class PostCreate(BaseModel):
     title: str
     content: str
     author_id: UUID
+
 
 class Post(BaseModel):
     id: str
@@ -30,8 +32,7 @@ class Post(BaseModel):
     class Config:
         from_attributes = True
 
+
 class LoginRequest(BaseModel):
     username: str
     password: str
-
-
