@@ -3,14 +3,14 @@ from uuid import UUID
 
 class UserCreate(BaseModel):
         username: str
-        email: EmailStr
+        email: str
         password: str
 
 
 class User(BaseModel):
     id: UUID
     username: str
-    email: EmailStr
+    email: str
     password: str
 
     class Config:

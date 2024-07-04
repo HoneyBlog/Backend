@@ -31,7 +31,7 @@ async def root():
 
 # Users APIs
 @router.get("/api/users/", response_model=list[User])
-async def get_users(db: Session = Depends(get_db)):
+async def get_users_endpoint(db: Session = Depends(get_db)):
     users = get_users(db)
     for user in users:
         user.id = str(user.id)
