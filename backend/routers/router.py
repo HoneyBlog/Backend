@@ -53,13 +53,12 @@ async def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
     user.id = str(user.id)
     return user
 
-@router.post("/api/users/login/", response_model=User)
+@router.post("/api/users/login/")
 async def login(login_request: LoginRequest, db: Session = Depends(get_db)):
     try:
-        user_validaton(login_request)
         user = check_login(db, login_request.username, login_request.password)
-        user.id = str(user.id)
-        return user
+        return {"token": user}  # Assuming 'user' is the JWT token
+
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
 
