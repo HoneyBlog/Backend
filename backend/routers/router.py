@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from schemas.schemas import UserCreate, User, PostCreate, Post, LoginRequest
-from services.crud import create_user, create_post, get_users, check_login, get_posts, get_user_by_id
+from services.crud import create_user, create_post, get_users, check_login, get_posts, get_user_by_id, check_token
 from config.database import get_db, test_connection, create_tables
 import re
 
@@ -61,6 +61,10 @@ async def login(login_request: LoginRequest, db: Session = Depends(get_db)):
 
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
+
+@router.get("/api/users/check-token/")
+async def check_token_endpoint(token: str):
+    return {"valid": check_token(token)}
 
 # Posts APIs
 @router.post("/api/posts/", response_model=Post)

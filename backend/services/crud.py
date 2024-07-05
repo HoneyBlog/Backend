@@ -53,3 +53,17 @@ def create_post(db: Session, post: PostCreate):
 
 def get_posts(db: Session):
     return db.query(Post).all()
+
+
+# Check JWT token : return bool if token is valid
+
+def check_token(token: str) -> bool:
+    try:
+        jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        return True
+    except jwt.ExpiredSignatureError:
+        return False
+    except jwt.InvalidTokenError:
+        return False
+    except Exception:
+        return False
