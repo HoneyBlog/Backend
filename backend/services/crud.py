@@ -37,7 +37,7 @@ def check_login(db: Session, username: str, password: str) -> str:
         'exp': datetime.utcnow() + timedelta(hours=1)  # Token expiration time
     }, SECRET_KEY, algorithm='HS256')
 
-    return token
+    return token , user.id
 
 
 # Posts CRUD
