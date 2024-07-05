@@ -18,15 +18,17 @@ class User(BaseModel):
 
 
 class PostCreate(BaseModel):
-    title: str
     content: str
+    comments_number: int
+    likes_number: int
     author_id: UUID
 
 
 class Post(BaseModel):
     id: str
-    title: str
     content: str
+    comments_number: int
+    likes_number: int
     author_id: str
 
     class Config:

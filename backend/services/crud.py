@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 # Replace with your secret key in a real application
 SECRET_KEY = "your-secret-key"
 
-
 # Users CRUD
 def create_user(db: Session, user: UserCreate):
     db_user = User(id=str(uuid4()), username=user.username, email=user.email, password=user.password)
@@ -44,7 +43,7 @@ def check_login(db: Session, username: str, password: str) -> str:
 # Posts CRUD
 
 def create_post(db: Session, post: PostCreate):
-    db_post = Post(id=str(uuid4()), title=post.title, content=post.content, author_id=post.author_id)
+    db_post = Post(id=str(uuid4()), content=post.content, comments_number=post.comments_number, likes_number=post.likes_number, author_id=post.author_id)
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
