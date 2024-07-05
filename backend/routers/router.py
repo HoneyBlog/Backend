@@ -75,8 +75,8 @@ async def create_post_endpoint(post: PostCreate, db: Session = Depends(get_db)):
     return post
 
 
-@router.get("/api/posts/", response_model=list[User])
-async def get_posts(db: Session = Depends(get_db)):
+@router.get("/api/posts/", response_model=list[Post])
+async def get_posts_endpoint(db: Session = Depends(get_db)):
     posts = get_posts(db)
     for post in posts:
         post.id = str(post.id)
