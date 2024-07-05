@@ -3,8 +3,7 @@ from sqlalchemy.orm import Session
 from schemas.schemas import UserCreate, User, PostCreate, Post, LoginRequest
 from services.crud import create_user, create_post, get_users, check_login, get_posts, get_user_by_id, check_token
 from config.database import get_db, test_connection, create_tables
-import re
-
+from services.utils import user_validaton
 
 # Ensure these functions are called appropriately and not within the route definitions
 test_connection()
@@ -12,18 +11,6 @@ create_tables()
 
 router = APIRouter()
 
-# User Regex
-USERNAME_REGEX = r'^[a-zA-Z0-9._-]{5,20}$'
-PASSWORD_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,25}$'
-
-# User validation
-validation_err = "Invalid username or password"
-
-def user_validaton(user):
-    if not re.match(USERNAME_REGEX, user.username):
-        raise HTTPException(status_code=400, detail=validation_err)
-    if not re.match(PASSWORD_REGEX, user.password):
-        raise HTTPException(status_code=400, detail=validation_err)
 
 @router.get("/")
 async def root():

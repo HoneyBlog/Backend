@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-    pip install fastapi pydantic uvicorn sqlalchemy uuid pyjwt
+    pip install fastapi pydantic uvicorn sqlalchemy uuid pyjwt bcrypt
 ```
 
 ## Run Instruction

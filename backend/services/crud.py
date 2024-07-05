@@ -15,6 +15,12 @@ SECRET_KEY = "your-secret-key"
 logging.basicConfig(level=logging.INFO)
 
 # Users CRUD
+def get_users(db: Session):
+    return db.query(User).all()
+
+def get_user_by_id(db: Session, user_id: str):
+    return db.query(User).filter(User.id == user_id).first()
+
 def create_user(db: Session, user: UserCreate):
     # Hash the password
     hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
@@ -23,12 +29,6 @@ def create_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
-
-def get_users(db: Session):
-    return db.query(User).all()
-
-def get_user_by_id(db: Session, user_id: str):
-    return db.query(User).filter(User.id == user_id).first()
 
 def check_login(db: Session, username: str, password: str) -> str:
     user = db.query(User).filter(User.username == username).first()
@@ -54,6 +54,9 @@ def check_login(db: Session, username: str, password: str) -> str:
     return token, user.id
 
 # Posts CRUD
+def get_posts(db: Session):
+    return db.query(Post).all()
+
 def create_post(db: Session, post: PostCreate):
     db_post = Post(id=str(uuid4()), content=post.content, comments_number=post.comments_number, likes_number=post.likes_number, author_id=post.author_id)
     db.add(db_post)
@@ -61,8 +64,6 @@ def create_post(db: Session, post: PostCreate):
     db.refresh(db_post)
     return db_post
 
-def get_posts(db: Session):
-    return db.query(Post).all()
 
 # Check JWT token : return bool if token is valid
 def check_token(token: str) -> bool:
