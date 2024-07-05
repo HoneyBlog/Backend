@@ -3,9 +3,7 @@ from sqlalchemy.orm import Session
 from schemas.schemas import UserCreate, User, PostCreate, Post, LoginRequest
 from services.crud import create_user, create_post, get_users, check_login, get_posts, get_user_by_id, check_token
 from config.database import get_db, test_connection, create_tables
-from services.utils import user_validaton
 
-# Ensure these functions are called appropriately and not within the route definitions
 test_connection()
 create_tables()
 
@@ -35,7 +33,6 @@ async def get_user_by_id_endpoint(user_id: str, db: Session = Depends(get_db)):
         
 @router.post("/api/users/", response_model=User)
 async def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
-    user_validaton(user)
     user = create_user(db, user)
     user.id = str(user.id)
     return user
@@ -54,14 +51,6 @@ async def check_token_endpoint(token: str):
     return {"valid": check_token(token)}
 
 # Posts APIs
-@router.post("/api/posts/", response_model=Post)
-async def create_post_endpoint(post: PostCreate, db: Session = Depends(get_db)):
-    post = create_post(db, post)
-    post.id = str(post.id)
-    post.author_id = str(post.author_id)
-    return post
-
-
 @router.get("/api/posts/", response_model=list[Post])
 async def get_posts_endpoint(db: Session = Depends(get_db)):
     posts = get_posts(db)
@@ -69,3 +58,11 @@ async def get_posts_endpoint(db: Session = Depends(get_db)):
         post.id = str(post.id)
         post.author_id = str(post.author_id)
     return posts
+
+@router.post("/api/posts/", response_model=Post)
+async def create_post_endpoint(post: PostCreate, db: Session = Depends(get_db)):
+    post = create_post(db, post)
+    post.id = str(post.id)
+    post.author_id = str(post.author_id)
+    return post
+

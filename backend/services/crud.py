@@ -7,6 +7,7 @@ import jwt
 from datetime import datetime, timedelta
 import bcrypt
 import logging
+from services.utils import user_validaton, is_valid_uuid
 
 # Replace with your secret key in a real application
 SECRET_KEY = "your-secret-key"
@@ -22,7 +23,7 @@ def get_user_by_id(db: Session, user_id: str):
     return db.query(User).filter(User.id == user_id).first()
 
 def create_user(db: Session, user: UserCreate):
-    # Hash the password
+    user_validaton(user)
     hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
     db_user = User(id=str(uuid4()), username=user.username, email=user.email, password=hashed_password.decode('utf-8'))
     db.add(db_user)
@@ -58,7 +59,8 @@ def get_posts(db: Session):
     return db.query(Post).all()
 
 def create_post(db: Session, post: PostCreate):
-    db_post = Post(id=str(uuid4()), content=post.content, comments_number=post.comments_number, likes_number=post.likes_number, author_id=post.author_id)
+    is_valid_uuid(post.author_id)    
+    db_post = Post(id=str(uuid4()), content=post.content, comments_number=0, likes_number=0, author_id=post.author_id)
     db.add(db_post)
     db.commit()
     db.refresh(db_post)

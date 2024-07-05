@@ -1,5 +1,6 @@
 import re
 from fastapi import HTTPException
+import uuid
 
 # User Regex
 USERNAME_REGEX = r'^[a-zA-Z0-9._-]{5,20}$'
@@ -16,3 +17,12 @@ def user_validaton(user):
         raise HTTPException(status_code=400, detail=validation_err)
     if not re.match(EMAIL_REGEX, user.email):
         raise HTTPException(status_code=400, detail=validation_err)
+    
+    
+    
+def is_valid_uuid(uuid_str: str) -> bool:
+    try:
+        uuid_obj = uuid.UUID(uuid_str, version=4)  
+        return str(uuid_obj) == uuid_str  
+    except ValueError:
+        return False
