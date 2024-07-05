@@ -1,6 +1,7 @@
 import re
 from fastapi import HTTPException
-import uuid
+from uuid import UUID
+from typing import Any
 
 # User Regex
 USERNAME_REGEX = r'^[a-zA-Z0-9._-]{5,20}$'
@@ -20,9 +21,13 @@ def user_validaton(user):
     
     
     
-def is_valid_uuid(uuid_str: str) -> bool:
-    try:
-        uuid_obj = uuid.UUID(uuid_str, version=4)  
-        return str(uuid_obj) == uuid_str  
-    except ValueError:
-        return False
+def is_valid_uuid(uuid_str: Any) -> bool:
+    if isinstance(uuid_str, UUID):
+        return True
+    if isinstance(uuid_str, str):
+        try:
+            uuid_obj = UUID(uuid_str, version=4)
+            return True
+        except ValueError:
+            return False
+    return False
